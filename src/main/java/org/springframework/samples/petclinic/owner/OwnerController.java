@@ -15,15 +15,14 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -40,15 +39,32 @@ import java.util.Map;
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
-
 	private final OwnerRepository owners;
-
 	private VisitRepository visits;
 
+//	private PetRepository petRepository;
+
+//	@Autowired
+//	public void setPetRepository(PetRepository petRepository) {
+//		this.petRepository = petRepository;
+//	}
+
+	// Bean이 Null인지 아닌지 눈으로 보고 싶음
+//	private final ApplicationContext applicationContext;
+
+	// Spring 4.3 이상부터 @Autowired 생략 가능. -> 어떤 클래스의 생성자가 하나뿐이고 생성자로 주입받는
+	// 레퍼런스 변수들이 Bean으로 등록되었다면 자동으로 Spring Framework 에서 알아서 넣어준다. 그래서 생략가능!!
 	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
 		this.owners = clinicService;
 		this.visits = visits;
-	}
+	}	// OwnerController 클래스는 OwnerRepository가 없으면 동작할 수 없다!!
+
+	// Bean이 Null인지 아닌지 눈으로 보고 싶음
+//	@GetMapping("/bean")
+//	@ResponseBody
+//	public String bean() {
+//		return "bean" + owners;
+//	}
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -83,15 +99,15 @@ class OwnerController {
 	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
-		if (owner.getLastName() == null) {
-			owner.setLastName(""); // empty string signifies broadest possible search
+		if (owner.getFirstName() == null) {
+			owner.setFirstName(""); // empty string signifies broadest possible search
 		}
 
-		// find owners by last name
-		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+		// find owners by first name
+		Collection<Owner> results = this.owners.findByFirstName(owner.getFirstName());
 		if (results.isEmpty()) {
 			// no owners found
-			result.rejectValue("lastName", "notFound", "not found");
+			result.rejectValue("firstName", "notFound", "not found");
 			return "owners/findOwners";
 		}
 		else if (results.size() == 1) {
