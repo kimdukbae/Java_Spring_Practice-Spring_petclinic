@@ -1,3 +1,14 @@
+# This project originated https://github.com/spring-projects/spring-petclinic and proceeded by referring to the video of instructor Baek Ki-sun.
+This is not the original source code, so be careful.
+
+
+# Changes
+* LastName Search -> FirstName Search
+* Include the search keyword
+* Add age column to the Owner
+* Test code
+* Insert code to check IoC, DI, and AOP
+
 # Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=main)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## Understanding the Spring Petclinic application with a few diagrams
